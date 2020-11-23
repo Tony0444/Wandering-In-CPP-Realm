@@ -1,42 +1,32 @@
 #include <iostream>
-#include <cassert>
+#include <array>
+#include <utility>
 
 /* 
- * Topic: 
- * 	fold expression[1]
- *	parameter pack [2]
- *
- * Sources:
- *	 [1] https://en.cppreference.com/w/cpp/language/fold
- *	 [2] https://en.cppreference.com/w/cpp/language/parameter_pack
+ * References:
+ *   [1] https://en.cppreference.com/w/cpp/language/fold
+ *   [2] https://en.cppreference.com/w/cpp/language/parameter_pack
  */
+
 
 template <typename ...T>
 auto sum(T ...args)
 {
-	return (args + ...);
+    return (args + ...);
 }
 
-template <typename ...U>
-auto Is_ascending(U ...args)
+template <typename T, std::size_t ...Is>
+auto sum(T t, std::index_sequence<Is...>)
 {
-	return (... < args);
-}
-
-template <typename ...U>
-auto Is_descending(U ...args)
-{
-	return (... > args);
+    return sum(t[Is]...);
 }
 
 int main()
 {
-	assert(sum(1, 2, 3, 4, 5, 6, 7, 8, 9, 10) == 55);	// OK
-	assert(sum(1.0, 3.1, 4) == 8.1);			// OK
-	assert((sum(1, 1) == 3) == false);			// NOT OK! 2 != 3
+    std::array<int, 3> a1 = {1, 4, 3};
+    int a2[5] = {1, 2, 3, 4, 0};
 
-	assert(Is_ascending(1, 3, 5, 9));			// OK
-	assert(Is_descending(1, 3, 5, 9) == false);		// NOT OK
-	return 0;
+    std::cout << "Sum a1 = " << sum(a1, std::make_index_sequence<a1.size()>{}) << "\n";
+    std::cout << "Sum a2 = " << sum(a2, std::make_index_sequence<5>{}) << "\n";
+    return 0;
 }
-
