@@ -1,2 +1,2 @@
-# Wandering-In-CPP20-Realm
-Playing and testing C++20 new features for the sole purpose of learning and having fun
+# Wandering-In-CPP-Realm
+Playing and testing new C++ features for the sole purpose of learning and having fun
